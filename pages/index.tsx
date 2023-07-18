@@ -11,12 +11,18 @@ import Link from "next/link";
 
 interface PostData {
   id: string;
-  [key: string]: any;
+  title: string;
+  date: string;
+  thumbnail: string;
+}
+interface HomeProps {
+  allPostsData: PostData[];
 }
 
 //SSGの場合
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData(); //mdファイルのid,titel,date,thumbnailを取得
+  console.debug(allPostsData);
   return {
     props: {
       allPostsData, //これをHomeに渡す
@@ -33,48 +39,45 @@ export async function getStaticProps() {
 //   };
 // }
 
-const Home: React.FC<PostData> = ({ allPostsData }) => {
+const Home: React.FC<HomeProps> = ({ allPostsData }) => {
   return (
     <Layout home>
       <Head>
         <title>siteTitle</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <p>
-          私はフルスタックエンジニアです/Udemy講師として活動しています/好きな言語はJavascriptです
-        </p>
+        <p>ブログです。</p>
         {/* <Link href="/posts/first-post">最初の投稿はこちら</Link>  あとで外す*/}
       </section>
 
       {/* gridで表示したい */}
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>📝エンジニアのブログ</h2>
-
-        <div className={`${styles.grid}`}>
-          {/* 1つ１つのブログをdivで生成してgrid適用させる */}
-          {allPostsData.map(({ id, date, title, thumbnail }) => (
-            <article key={id}>
-              <Link href={`/posts/${id}`}>
-                <img
-                  src={`${thumbnail}`}
-                  className={`${styles.thumbnailImage}`}
-                />
-              </Link>
-              <Link href={`/posts/${id}`}>
-                <a className={utilStyles.boldText}>{title}</a>
-              </Link>
-              {/* {title} */}
-              <br />
-              {/* {id}
+      </section>
+      <div className={`${styles.grid}`}>
+        {/* 1つ１つのブログをdivで生成してgrid適用させる */}
+        {allPostsData.map(({ id, date, title, thumbnail }) => (
+          <article key={id}>
+            <Link href={`/posts/${id}`}>
+              <img
+                src={`${thumbnail}`}
+                className={`${styles.thumbnailImage}`}
+              />
+            </Link>
+            <Link legacyBehavior href={`/posts/${id}`}>
+              <a className={utilStyles.boldText}>{title}</a>
+            </Link>
+            {/* {title} */}
+            <br />
+            {/* {id}
               <br />
               {date} */}
-              <small className={utilStyles.lightText}>
-                <Date dateString={date} />
-              </small>
-            </article>
-          ))}
-        </div>
-      </section>
+            <small className={utilStyles.lightText}>
+              {/* <Date dateString={date} /> */}
+            </small>
+          </article>
+        ))}
+      </div>
     </Layout>
   );
 };

@@ -19,10 +19,11 @@ const Layout: React.FC<LayoutProps> = ({ children, home }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header className={styles.header}>
+        {/* home画面のときは画像を大きくする */}
         {home ? (
           <>
             <img
-              src="/images/profile.png"
+              src="/images/cat.jpg"
               className={`${styles.headerHomeImage} ${utilStyles.borderCircle}`}
               alt={name}
             />
@@ -32,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children, home }) => {
           <>
             <Link href="/">
               <img
-                src="/images/profile.png"
+                src="/images/cat.jpg"
                 alt=""
                 className={`${styles.headerImage} ${utilStyles.borderCircle}`}
               />
